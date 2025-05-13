@@ -61,13 +61,15 @@ export default function Main() {
             ctx.lineWidth = 2;
             ctx.textAlign = "center";
 
-            // Draw top text
-            ctx.fillText(imageInfo.topText.toUpperCase(), canvas.width / 2, 50);
-            ctx.strokeText(imageInfo.topText.toUpperCase(), canvas.width / 2, 50);
+            const maxWidth = canvas.width - 20;
+            const lineHeight = 50;
 
-            // Draw bottom text
-            ctx.fillText(imageInfo.bottomText.toUpperCase(), canvas.width / 2, canvas.height - 20);
-            ctx.strokeText(imageInfo.bottomText.toUpperCase(), canvas.width / 2, canvas.height - 20);
+            wrapTextTop(ctx, imageInfo.topText.toUpperCase(), canvas.width / 2, 50, maxWidth, lineHeight);
+
+            wrapTextBottom(ctx, imageInfo.bottomText.toUpperCase(), canvas.width / 2, canvas.height - 20, maxWidth, lineHeight)
+
+            // Draw top text
+            
         };
 
         image.src = imageInfo.imageUrl;
@@ -80,6 +82,59 @@ export default function Main() {
         link.href = canvas.toDataURL('image/png');
         link.click();
     }
+
+    function wrapTextTop(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + " ";
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+
+    if (testWidth > maxWidth && n > 0) {
+      ctx.fillText(line, x, y);
+      ctx.strokeText(line, x, y);
+      line = words[n] + " ";
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+
+  ctx.fillText(line, x, y);
+  ctx.strokeText(line, x, y);
+}
+
+
+function wrapTextBottom(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  const lines = [];
+
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line + words[i] + " ";
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+
+    if (testWidth > maxWidth && i > 0) {
+      lines.push(line);
+      line = words[i] + " ";
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line);
+
+  // Draw lines in reverse from bottom up
+  for (let j = 0; j < lines.length; j++) {
+    const lineY = y - lineHeight * (lines.length - 1 - j);
+    ctx.fillText(lines[j], x, lineY);
+    ctx.strokeText(lines[j], x, lineY);
+  }
+}
+
+
 
     return (
         <main>
