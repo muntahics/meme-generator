@@ -21,7 +21,7 @@ export default function Main() {
     // Re-draw meme whenever inputs or image changes
     useEffect(() => {
         drawMeme();
-    }, [imageInfo]);
+    },[imageInfo.topText, imageInfo.bottomText, imageInfo.imageUrl] );
 
     function generateMeme() {
         const randomIndex = Math.floor(Math.random() * allMemes.length);
