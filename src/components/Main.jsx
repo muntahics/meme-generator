@@ -157,13 +157,24 @@ function wrapTextBottom(ctx, text, x, y, maxWidth, lineHeight) {
                         value={imageInfo.bottomText}
                         onChange={handleChange}
                     />
-                </label>
-                <button onClick={generateMeme}>Get a new meme image 🖼</button>
+          </label>
+          
+          <button onClick={generateMeme}>
+            <span className='text'>Get a new meme image 🖼</span>
+                </button>
             </div>
 
-            <canvas ref={canvasRef} style={{ maxWidth: "100%", border: "1px solid #ccc", marginTop: "20px" }} />
+            <canvas ref={canvasRef} style={{ maxWidth: "100%", border: "3px solid white" ,marginTop: "20px" }} />
 
-            <button className='download-button' onClick={downloadMeme}>Download Meme</button>
+            
+            
+        <div className='down'>
+          <button onClick={downloadMeme}>
+                <span className='text'>Download Meme</span>
+          
+              </button>
+              </div>
+            
         </main>
     );
 }
